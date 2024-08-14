@@ -15,4 +15,4 @@
 - 只支持cluster模式
 - 只支持读主
 - 不支持dump/keys/scan/msetnx/sdiff/siner/sunion/pipeline/eval 命令
-- exec 命令中不支持空格(space)
+- exec 命令中不支持多余的空格(使用空格进行命令切分)
