@@ -1,0 +1,24 @@
+module (
+    name = "bili_redis_sdk_cpp",
+    version = "1.0.0",  
+)
+data_deps_ext = use_extension("//third_party:repositories.bzl", "data_deps_ext")
+use_repo(
+    data_deps_ext,
+    "cpptoml",
+    "com_github_google_leveldb",
+    "com_github_brpc_brpc",
+    "com_github_fmtlib_fmt",
+    "xxhash",
+    "com_github_jupp0r_prometheus_cpp",
+)
+bazel_dep(name = "bazel_skylib", version = "1.4.0")
+bazel_dep(name = "rules_proto", version = "4.0.0")
+bazel_dep(name = "rules_cc", version = "0.0.4", dev_dependency = True)
+bazel_dep(name = "glog", version = "0.5.0", repo_name = "com_github_google_glog")
+bazel_dep(name = "zlib", version = "1.2.13", repo_name = "com_github_madler_zlib")
+bazel_dep(name = "protobuf", version = "3.19.6", repo_name = "com_google_protobuf")
+bazel_dep(name = "googletest", version = "1.12.1", repo_name = "com_google_googletest")
+bazel_dep(name = "rules_pkg", version = "0.7.0")
+bazel_dep(name = "platforms", version = "0.0.6")
+bazel_dep(name = "gflags", version = "2.2.2", repo_name = "com_github_gflags_gflags")

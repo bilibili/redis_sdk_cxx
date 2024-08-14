@@ -1,0 +1,23 @@
+# bzlmod
+common --enable_bzlmod
+common --registry=https://bcr.bazel.build
+common --registry=https://baidu.github.io/babylon/registry
+common --registry=https://raw.githubusercontent.com/bazelboost/registry/main
+
+# cc_library config
+build --cxxopt='-std=c++11'
+
+# most support cpp 17x
+# build --cxxopt='-std=c++17'
+
+# protobuf enable zlib
+build --copt -DHAVE_ZLIB=1
+build --copt -ggdb
+build --copt -DHAVE_UNISTD_H
+# glog enable stacktrace
+build --copt -DHAVE_UNWIND_H
+# brpc enable glog
+build --define=with_glog=true
+
+build --experimental_cc_implementation_deps
+

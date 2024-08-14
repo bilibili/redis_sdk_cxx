@@ -1,0 +1,43 @@
+package(default_visibility = ["//visibility:public"])
+
+filegroup(
+    name = "package-srcs",
+    srcs = glob(
+        ["**"],
+        exclude = [
+            "bazel-*/**",
+            ".git/**",
+            ".idea/**",
+            "build/**",
+        ],
+    ),
+    tags = ["automanaged"],
+    visibility = ["//visibility:private"],
+)
+
+filegroup(
+    name = "all-srcs",
+    srcs = [
+        ":package-srcs",
+    ],
+    tags = ["automanaged"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "bili_redis",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//redis_sdk:redis_sdk",
+    ],
+)
+
+toolchain(
+    name = "built_cmake_toolchain",
+    exec_compatible_with = [
+        "@platforms//:osx",
+        "@platforms//:x86_64",
+    ],
+    toolchain = "@rules_foreign_cc//tools/build_defs/native_tools:built_cmake",
+    toolchain_type = "@rules_foreign_cc//tools/build_defs:cmake_toolchain",
+)

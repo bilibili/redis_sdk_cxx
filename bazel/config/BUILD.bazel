@@ -1,0 +1,7 @@
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+config_setting(
+    name = "without_prometheus",
+    define_values = {"WITHOUT_PROMETHEUS": "true"},
+    visibility = ["//visibility:public"],
+)
