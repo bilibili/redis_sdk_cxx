@@ -1,0 +1,76 @@
+COPTS = [
+    "-D__STDC_FORMAT_MACROS",
+    "-DBTHREAD_USE_FAST_PTHREAD_MUTEX",
+    "-D__const__=__unused__",
+    "-D_GNU_SOURCE",
+    "-DUSE_SYMBOLIZE",
+    "-DNO_TCMALLOC",
+    "-D__STDC_LIMIT_MACROS",
+    "-D__STDC_CONSTANT_MACROS",
+    "-fPIC",
+    "-Wno-unused-parameter",
+    "-fno-omit-frame-pointer",
+    "-DGFLAGS_NS=google",
+    "-Dprivate=public",
+    "-Dprotected=public",
+    "-DBAZEL_TEST=1",
+    "--include test/sstream_define_as_public.h",
+    "-DBVAR_NOT_LINK_DEFAULT_VARIABLES",
+    "-DUNIT_TEST",
+]
+
+cc_library(
+    name = "test_common",
+    srcs = [
+        "mock_node.cpp",
+        "test_common.cpp",
+    ],
+    hdrs = [
+        "mock_node.h",
+        "sstream_define_as_public.h",
+        "test_common.h",
+    ],
+    copts = COPTS,
+    visibility = ["//visibility:public"],
+    deps = [
+        "//redis_sdk:redis_sdk_impl",
+        "@com_github_brpc_brpc//:brpc",
+        "@com_google_googletest//:gtest",
+    ],
+)
+
+cc_test(
+    name = "client_impl_test",
+    srcs = ["client_impl_test.cpp"],
+    copts = COPTS,
+    deps = [
+        "test_common",
+    ],
+)
+
+cc_test(
+    name = "real_crud_test",
+    srcs = ["real_crud_test.cpp"],
+    copts = COPTS,
+    deps = [
+        "test_common",
+    ],
+)
+
+cc_test(
+    name = "redirect_test",
+    srcs = ["redirect_test.cpp"],
+    copts = COPTS,
+    deps = [
+        "test_common",
+    ],
+)
+
+cc_test(
+    name = "slot_test",
+    srcs = ["slot_test.cpp"],
+    copts = COPTS,
+    deps = [
+        "test_common",
+    ],
+)

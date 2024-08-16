@@ -1,0 +1,75 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+
+package(default_visibility = ["//visibility:private"])
+
+_COPTS = select({
+    "//bazel/config:without_prometheus": [],
+    "//conditions:default": ["-DWITH_PROMETHEUS"],
+})
+
+cc_library(
+    name = "redis_sdk_api",
+    hdrs = glob(["include/redis_sdk/**/*.h", "include/redis_sdk/**/*.hpp"]),
+    copts = _COPTS,
+    strip_include_prefix = "include",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "@com_github_brpc_brpc//:brpc",
+        "@com_google_protobuf//:protobuf_lite",
+    ],
+)
+
+cc_library(
+    name = "redis_sdk_impl",
+    srcs = glob(["src/**/*.cpp"]),
+    hdrs = glob(["include/**/*.h", "include/**/*.hpp"]),
+    copts = _COPTS,
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":redis_sdk_api",
+        "@com_github_brpc_brpc//:brpc",
+        "@com_github_fmtlib_fmt//:fmt",
+        "@com_github_google_glog//:glog",
+        "@com_google_protobuf//:protobuf_lite",
+        "@xxhash",
+    ] + select({
+        "//bazel/config:without_prometheus": [],
+        "//conditions:default": ["@com_github_jupp0r_prometheus_cpp//core"],
+    }),
+)
+
+cc_library(
+    name = "redis_sdk",
+    copts = _COPTS,
+    implementation_deps = [":redis_sdk_impl"],
+    visibility = ["//visibility:public"],
+    deps = [":redis_sdk_api"],
+)
+
+cc_binary(
+    name = "async_example",
+    srcs = ["async_example.cpp"],
+    copts = _COPTS,
+    deps = [":redis_sdk_impl"],
+)
+
+cc_binary(
+    name = "client_bench",
+    srcs = ["client_bench.cpp"],
+    copts = _COPTS,
+    deps = [":redis_sdk_impl"],
+)
+
+cc_binary(
+    name = "client_tool",
+    srcs = ["client_tool.cpp"],
+    copts = _COPTS,
+    deps = [":redis_sdk_impl"],
+)
+
+cc_binary(
+    name = "example",
+    srcs = ["example.cpp"],
+    copts = _COPTS,
+    deps = [":redis_sdk_impl"],
+)

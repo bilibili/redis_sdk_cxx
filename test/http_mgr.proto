@@ -1,0 +1,14 @@
+syntax="proto3";
+
+package rsdk.client.test;
+
+option cc_generic_services = true;
+
+message HttpRequest {};
+message HttpResponse {};
+
+service HttpService {
+  rpc get(HttpRequest) returns (HttpResponse);
+};
+
+
